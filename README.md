@@ -43,12 +43,24 @@ The parser currently understands native evidence for campaign state, base-game C
 
 The remaining combat/event counters are still being reverse-engineered. Low Galaxy counters are intentionally not used as negative evidence.
 
+## Source snapshot
+
+The exact tested V0.9 source is archived losslessly at:
+
+`archive/Control_GOG_Achievement_Repair_V9_NATIVE_FIRST.go.gz.b64`
+
+See `archive/README.md` for reconstruction instructions.
+
+Expected reconstructed source SHA-256:
+
+`dfa768927b98ba68b87c1865dfd1b75d6b9c249f5389e7f9e3087ca8271a1bbc`
+
 ## Build
 
-Go 1.22+:
+After reconstructing the Go source:
 
 ```bash
-GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o Control_GOG_Achievement_Repair.exe ./src/Control_GOG_Achievement_Repair.go
+GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o Control_GOG_Achievement_Repair.exe Control_GOG_Achievement_Repair_V9_NATIVE_FIRST.go
 ```
 
 ## Status
