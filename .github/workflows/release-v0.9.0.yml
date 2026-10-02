@@ -1,0 +1,90 @@
+name: Build v0.9.0 release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    if: github.event.head_commit.message == 'Build v0.9.0 release'
+    runs-on: ubuntu-latest
+    env:
+      TAG: v0.9.0
+      WIN_ZIP: Control_GOG_Achievement_Repair_v0.9.0_Windows_x64.zip
+      SRC_ZIP: Control_GOG_Achievement_Repair_v0.9.0_Source.zip
+      SOURCE_SHA256: dfa768927b98ba68b87c1865dfd1b75d6b9c249f5389e7f9e3087ca8271a1bbc
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.25.x'
+
+      - name: Restore exact V0.9 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 -d archive/Control_GOG_Achievement_Repair_V9_NATIVE_FIRST.go.gz.b64 | gzip -dc > Control_GOG_Achievement_Repair.go
+          echo "$SOURCE_SHA256  Control_GOG_Achievement_Repair.go" | sha256sum -c -
+
+      - name: Build Windows x64
+        shell: bash
+        run: |
+          set -euo pipefail
+          GOOS=windows GOARCH=amd64 CGO_ENABLED=0 \
+            go build -trimpath -ldflags="-s -w" \
+            -o Control_GOG_Achievement_Repair.exe \
+            Control_GOG_Achievement_Repair.go
+
+      - name: Package release archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          zip -j "$WIN_ZIP" Control_GOG_Achievement_Repair.exe README.md
+          zip -j "$SRC_ZIP" Control_GOG_Achievement_Repair.go README.md
+          sha256sum Control_GOG_Achievement_Repair.exe Control_GOG_Achievement_Repair.go "$WIN_ZIP" "$SRC_ZIP" | tee release_hashes.txt
+
+      - name: Create release notes
+        shell: bash
+        run: |
+          {
+            echo '# Control - GOG Achievement Repair v0.9.0'
+            echo
+            echo '**Native First** public build.'
+            echo
+            echo 'Control native save data is the primary source of truth. Low GOG counters are advisory only and never treated as negative evidence.'
+            echo
+            echo '### Assets'
+            echo
+            echo '- **Windows x64**: EXE + README'
+            echo '- **Source**: Go script + README'
+            echo
+            echo '### SHA-256'
+            echo
+            echo '~~~text'
+            cat release_hashes.txt
+            echo '~~~'
+          } > release_notes.md
+
+      - name: Publish GitHub release
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$WIN_ZIP" "$SRC_ZIP" --clobber
+            gh release edit "$TAG" \
+              --title "Control GOG Achievement Repair v0.9.0 - Native First" \
+              --notes-file release_notes.md
+          else
+            gh release create "$TAG" "$WIN_ZIP" "$SRC_ZIP" \
+              --target "$GITHUB_SHA" \
+              --title "Control GOG Achievement Repair v0.9.0 - Native First" \
+              --notes-file release_notes.md
+          fi
