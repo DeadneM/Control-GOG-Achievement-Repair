@@ -1,0 +1,7 @@
+# V0.9 hashes
+
+| Artifact | SHA-256 |
+|---|---|
+| Go source | `dfa768927b98ba68b87c1865dfd1b75d6b9c249f5389e7f9e3087ca8271a1bbc` |
+| Windows test EXE | `2602bd98f4b9c6c99a26f3791771531ad25fdc77606fa954bc027526a99864c5` |
+| Test ZIP | `8723b57975c5295405be01b98f6088385f471e5ff37e7a20318a08793d61b8a2` |
