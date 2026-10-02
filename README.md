@@ -59,7 +59,9 @@ Expected reconstructed source SHA-256:
 
 ## Release packages
 
-The GitHub release provides two clean archives:
+Download **v0.9.0 - Native First** from the [GitHub release](https://github.com/DeadneM/Control-GOG-Achievement-Repair/releases/tag/v0.9.0).
+
+The release provides two clean archives:
 
 - `Control_GOG_Achievement_Repair_v0.9.0_Windows_x64.zip` — `Control_GOG_Achievement_Repair.exe` + `README.md`
 - `Control_GOG_Achievement_Repair_v0.9.0_Source.zip` — `Control_GOG_Achievement_Repair.go` + `README.md`
