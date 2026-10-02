@@ -1,8 +1,10 @@
+![Control GOG Achievement Repair](docs/control_gog_achievement_repair_banner.png)
+
 # Control - GOG Achievement Repair
 
 Achievement repair utility for **Control Ultimate Edition (GOG)**.
 
-Current development build: **V0.9 Native First**
+Current public build: **v0.9.0 - Native First**
 
 ## Core principle
 
@@ -55,6 +57,13 @@ Expected reconstructed source SHA-256:
 
 `dfa768927b98ba68b87c1865dfd1b75d6b9c249f5389e7f9e3087ca8271a1bbc`
 
+## Release packages
+
+The GitHub release provides two clean archives:
+
+- `Control_GOG_Achievement_Repair_v0.9.0_Windows_x64.zip` — `Control_GOG_Achievement_Repair.exe` + `README.md`
+- `Control_GOG_Achievement_Repair_v0.9.0_Source.zip` — `Control_GOG_Achievement_Repair.go` + `README.md`
+
 ## Build
 
 After reconstructing the Go source:
@@ -65,4 +74,4 @@ GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o C
 
 ## Status
 
-V0.9 is still a **test build** while the remaining native counters are mapped and validated on real saves.
+v0.9.0 is the current **Native First** public build. The repair path is live-tested against GOG; forensic mapping of the remaining combat/event counters is still ongoing.
